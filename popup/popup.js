@@ -4,23 +4,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const siteInput = document.getElementById('siteInput');
   const addSiteButton = document.getElementById('addSite');
   const blockedSitesList = document.getElementById('blockedSitesList');
+  const whitelistInput = document.getElementById('whitelistInput');
+  const addWhitelistButton = document.getElementById('addWhitelistSite');
+  const whitelistList = document.getElementById('whitelistList');
 
-  // Default blocked sites
   const defaultSites = ["youtube.com", "netflix.com", "primevideo.com", "tiktok.com"];
 
-
-  // Load the current state and block list from storage, initializing default sites if empty
-  chrome.storage.sync.get(['focusMode', 'blockedSites'], (data) => {
+  // Load state and block list from storage
+  chrome.storage.sync.get(['focusMode', 'blockedSites', 'userWhitelist'], (data) => {
     const focusModeEnabled = data.focusMode || false;
     const blockedSites = data.blockedSites && data.blockedSites.length > 0 ? data.blockedSites : defaultSites;
+    const userWhitelist = data.userWhitelist || [];
 
-    // Save default sites to storage if blockedSites is empty
     if (!data.blockedSites || data.blockedSites.length === 0) {
       chrome.storage.sync.set({ blockedSites });
     }
 
     setFocusMode(focusModeEnabled);
     renderBlockedSites(blockedSites);
+    renderWhitelist(userWhitelist);
   });
 
   // Toggle focus mode
@@ -46,26 +48,39 @@ document.addEventListener('DOMContentLoaded', () => {
           blockedSites.push(site);
           chrome.storage.sync.set({ blockedSites }, () => {
             renderBlockedSites(blockedSites);
-            siteInput.value = ''; // Clear input after adding
+            siteInput.value = '';
           });
         }
       });
     }
   });
 
-  // Render blocked sites list with styled remove buttons
+  // Add a site to the whitelist
+  addWhitelistButton.addEventListener('click', () => {
+    const site = whitelistInput.value.trim();
+    if (site) {
+      chrome.storage.sync.get('userWhitelist', (data) => {
+        const userWhitelist = data.userWhitelist || [];
+        if (!userWhitelist.includes(site)) {
+          userWhitelist.push(site);
+          chrome.storage.sync.set({ userWhitelist }, () => {
+            renderWhitelist(userWhitelist);
+            whitelistInput.value = '';
+          });
+        }
+      });
+    }
+  });
+
+  // Render blocked sites list
   function renderBlockedSites(sites) {
-    blockedSitesList.innerHTML = ''; // Clear existing list
+    blockedSitesList.innerHTML = '';
     sites.forEach((site, index) => {
       const siteRow = document.createElement('div');
       siteRow.classList.add('site-row');
-
-      // Left-aligned website name
       const siteName = document.createElement('span');
       siteName.classList.add('site-name');
       siteName.textContent = site;
-      
-      // Create right-aligned remove button
       const removeButton = document.createElement('button');
       removeButton.classList.add('button', 'is-small', 'is-danger', 'is-outlined', 'remove-button');
       removeButton.textContent = 'Remove';
@@ -75,14 +90,36 @@ document.addEventListener('DOMContentLoaded', () => {
           renderBlockedSites(sites);
         });
       });
-
       siteRow.appendChild(siteName);
       siteRow.appendChild(removeButton);
       blockedSitesList.appendChild(siteRow);
     });
   }
 
-  // Set the focus mode UI state
+  // Render whitelist
+  function renderWhitelist(sites) {
+    whitelistList.innerHTML = '';
+    sites.forEach((site, index) => {
+      const siteRow = document.createElement('div');
+      siteRow.classList.add('site-row');
+      const siteName = document.createElement('span');
+      siteName.classList.add('site-name');
+      siteName.textContent = site;
+      const removeButton = document.createElement('button');
+      removeButton.classList.add('button', 'is-small', 'is-danger', 'is-outlined', 'remove-button');
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', () => {
+        sites.splice(index, 1);
+        chrome.storage.sync.set({ userWhitelist: sites }, () => {
+          renderWhitelist(sites);
+        });
+      });
+      siteRow.appendChild(siteName);
+      siteRow.appendChild(removeButton);
+      whitelistList.appendChild(siteRow);
+    });
+  }
+
   function setFocusMode(isEnabled) {
     notification.style.display = isEnabled ? 'block' : 'none';
     toggleButton.className = isEnabled ? 'button is-danger' : 'button is-success';
