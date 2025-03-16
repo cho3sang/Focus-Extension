@@ -13,14 +13,28 @@
       padding-right: 10px;
     }
     .site-row {
-  display: flex;
-  align-items: center;
-  padding: 8px 0;
-}
-
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+    }
     .site-row:last-child { border-bottom: none; }
     .site-name { flex-grow: 1; text-align: left; margin-right: 10px; font-size: 1rem; }
     .remove-button { font-size: 0.8rem; padding: 4px 8px; }
+
+    /* Additional styles for collapsible panels */
+    .panel-block {
+      display: block;
+    }
+    .collapsible {
+      cursor: pointer;
+      user-select: none;
+    }
+    .content {
+      display: block;
+    }
+    .content.is-hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -38,31 +52,51 @@
       </div>
 
       <!-- Add Site to Block List -->
-      <div class="field">
-        <label class="label">Add Site to Block List:</label>
-        <div class="control">
-          <input id="siteInput" class="input" type="text" placeholder="e.g., youtube.com">
+      <form id="blockSiteForm">
+        <div class="field">
+          <label class="label" for="siteInput">Add Site to Block List:</label>
+          <div class="control">
+            <input id="siteInput" class="input" type="text" placeholder="e.g., youtube.com" required pattern="[a-z0-9.-]+\.[a-z]{2,}" aria-describedby="blockListError">
+          </div>
         </div>
-        <button id="addSite" class="button is-link">Add Site</button>
-      </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button id="addSite" class="button is-info" type="submit">Add Site</button>
+          </div>
+          <div class="control">
+            <p id="blockListSuccess" class="help is-success" style="display: none;">Site added to block list.</p>
+            <p id="blockListError" class="help is-danger" style="display: none;"></p>
+          </div>
+        </div>
+      </form>
 
       <div class="panel">
-        <p class="panel-heading">Blocked Sites</p>
-        <div id="blockedSitesList" class="panel-block is-flex-direction-column"></div>
+        <p class="panel-heading collapsible" id="toggleBlockedSites">Blocked Sites</p>
+        <div id="blockedSitesList" class="panel-block is-flex-direction-column content"></div>
       </div>
 
       <!-- Add Whitelist Section -->
-      <div class="field">
-        <label class="label">Add Site to Whitelist:</label>
-        <div class="control">
-          <input id="whitelistInput" class="input" type="text" placeholder="e.g., https://www.youtube.com/watch?v=example">
+      <form id="whitelistForm">
+        <div class="field">
+          <label class="label" for="whitelistInput">Add Site to Whitelist:</label>
+          <div class="control">
+            <input id="whitelistInput" class="input" type="text" placeholder="e.g., YouTube video, playlist, or channel URL" required aria-describedby="whitelistError">
+          </div>
         </div>
-        <button id="addWhitelistSite" class="button is-link">Add to Whitelist</button>
-      </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button id="addWhitelistSite" class="button is-success" type="submit">Add to Whitelist</button>
+          </div>
+          <div class="control">
+            <p id="whitelistSuccess" class="help is-success" style="display: none;">Site added to whitelist.</p>
+            <p id="whitelistError" class="help is-danger" style="display: none;"></p>
+          </div>
+        </div>
+      </form>
 
       <div class="panel">
-        <p class="panel-heading">Whitelisted Sites</p>
-        <div id="whitelistList" class="panel-block is-flex-direction-column"></div>
+        <p class="panel-heading collapsible" id="toggleWhitelist">Whitelisted Sites</p>
+        <div id="whitelistList" class="panel-block is-flex-direction-column content"></div>
       </div>
     </div>
   </section>

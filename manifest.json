@@ -11,15 +11,24 @@
     "*://*.netflix.com/*",
     "*://*.tiktok.com/*",
     "*://*.youtube.com/*",
-    "*://*.amazon.com/*"
+    "*://*.primevideo.com/*",
+    "https://www.googleapis.com/*",
+    "https://www.youtube.com/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "icons": {
-    "16": "images/focus-16.png"
+    "16": "images/focus-16.png",
+    "48": "images/focus-48.png",
+    "128": "images/focus-128.png"
   },
   "action": {
     "default_popup": "popup/popup.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "service_worker": "script-src 'self'; object-src 'self';"
   }
 }
