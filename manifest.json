@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Focus Blocker",
+  "version": "1.0",
+  "description": "Blocks distracting websites to help you focus.",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.netflix.com/*",
+    "*://*.tiktok.com/*",
+    "*://*.youtube.com/*",
+    "*://*.amazon.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "images/focus-16.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html"
+  }
+}

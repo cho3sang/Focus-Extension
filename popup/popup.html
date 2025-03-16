@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus Mode</title>
+  <link rel="stylesheet" href="bulma.min.css">
+  <style>
+    /* Set a fixed height for the blocked sites list and make it scrollable */
+    #blockedSitesList {
+      max-height: 150px; /* Adjust the height as needed */
+      overflow-y: auto;
+      padding-right: 10px; /* Add some padding to prevent scrollbar overlap */
+    }
+
+    /* Style each site row with consistent spacing and alignment */
+    .site-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0; /* Add some vertical padding for consistent row height */
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .site-row:last-child {
+      border-bottom: none; /* Remove bottom border for the last item */
+    }
+
+    /* Left-align the website name */
+    .site-name {
+      flex-grow: 1;
+      text-align: left;
+      margin-right: 10px; /* Space between site name and button */
+      font-size: 1rem; /* Ensure consistent font size */
+    }
+
+    /* Right-align the remove button */
+    .remove-button {
+      font-size: 0.8rem;
+      padding: 4px 8px; /* Add padding to make button visually balanced */
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">Focus Mode</h1>
+      <p class="subtitle has-text-centered">Stay productive by blocking distractions.</p>
+
+      <!-- Notification when focus mode is active -->
+      <div class="notification is-primary" style="display: none;">
+        Focus mode is enabled. Distracting sites are now blocked.
+      </div>
+
+      <!-- Toggle Button -->
+      <div class="buttons is-centered">
+        <button id="toggleFocusMode" class="button is-success">Enable Focus Mode</button>
+      </div>
+
+      <!-- Add Site to Block List -->
+      <div class="field">
+        <label class="label">Add Site to Block List:</label>
+        <div class="control">
+          <input id="siteInput" class="input" type="text" placeholder="e.g., youtube.com">
+        </div>
+        <button id="addSite" class="button is-link">Add Site</button>
+      </div>
+
+      <!-- Blocked Sites List -->
+      <div class="panel">
+        <p class="panel-heading">Blocked Sites</p>
+        <div id="blockedSitesList" class="panel-block is-flex-direction-column"></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>
