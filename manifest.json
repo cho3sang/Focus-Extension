@@ -5,15 +5,17 @@
   "description": "Blocks distracting websites to help you focus.",
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "activeTab",
+    "scripting"
   ],
   "host_permissions": [
     "*://*.netflix.com/*",
     "*://*.tiktok.com/*",
     "*://*.youtube.com/*",
+    "https://www.youtube.com/*",
     "*://*.primevideo.com/*",
-    "https://www.googleapis.com/*",
-    "https://www.youtube.com/*"
+    "https://www.googleapis.com/*"
   ],
   "background": {
     "service_worker": "background.js",
@@ -26,9 +28,5 @@
   },
   "action": {
     "default_popup": "popup/popup.html"
-  },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'",
-    "service_worker": "script-src 'self'; object-src 'self';"
   }
 }
