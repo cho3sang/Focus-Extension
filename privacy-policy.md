@@ -14,4 +14,4 @@ Focus Blocker does not collect, store, or share any personally identifiable info
 - All data is stored locally on your device using Chrome’s `storage.sync`.
 - The extension does not send data to external servers.
 
-If you have any concerns, contact us at [your email].
+If you have any concerns, contact us at tenzinchoesang64@gmail.com.
